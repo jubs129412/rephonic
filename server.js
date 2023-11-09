@@ -8,15 +8,20 @@ const client = axios.create({
 
 const app = express();
 const port = 3000;
-
+app.use(cors());
 app.get('/process', async (req, res) => {
   
   const { apiKey, audienceInfo, name, list } = req.query;
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
   });
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox', "single-process", "--no-zygote"],
+    executablePath:
+    process.env.NODE_ENV === "production"
+    ? process.env.PUPPETEER_EXECUTABLE_PATH
+    :puppeteer.executablePath(),
+  });  const page = await browser.newPage();
 
   // Intercept network requests
   await page.setRequestInterception(true);
