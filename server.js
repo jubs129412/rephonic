@@ -82,7 +82,8 @@ response = client.post('https://api.openai.com/v1/chat/completions', params)
   }
   else{
     console.log("no")
-    res.send("no");
+    c = "no"
+    res.send({ c });
   }
 
 }).catch(err => {
