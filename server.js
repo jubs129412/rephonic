@@ -62,10 +62,10 @@ const params = {
         "content": `
         preferred audience: 
 
-        ${audienceInfo}
+        ${audienceInfo} \n\n
         ------------
         Say yes if the podcast description below fits with the preferred audience above:
-        
+    \n\n
         ${desc}
         `
     }
