@@ -29,20 +29,27 @@ app.get('/process', async (req, res) => {
   await page.setRequestInterception(true);
 
   // Listen for requests and log URLs
-  page.on('request', (request) => {
+  page.on('request', async (request) => {
     const url = request.url();
     if (url.endsWith('.json')) {
       console.log('Request URL:', url);
-      fetch(url, {
-        method: 'GET',
-      })
-        .then(response => response.json())
-        .then(data => {
-
-          desc = data.pageProps.rawPodcast.description
-          console.log(desc);
-        })
+  
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+        });
+  
+        const data = await response.json();
+  
+        // Assuming desc is defined outside this block
+        desc = data.pageProps.rawPodcast.description;
+        console.log(desc);
+  
+      } catch (error) {
+        console.error('Error fetching JSON:', error);
+      }
     }
+  
     request.continue();
   });
 
