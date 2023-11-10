@@ -6,13 +6,13 @@ const client = axios.create({
   headers: { 'Authorization': 'Bearer ' + process.env.openai }
 });
 
-const url = process.env.nexturl + `/${name}`;
 const app = express();
 const port = 3000;
 app.use(cors());
 app.post('/process', async (req, res) => {
   
   const { apiKey, audienceInfo, name, list } = req.query;
+  const url = process.env.nexturl + `/${name}`;
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
   });
