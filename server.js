@@ -7,7 +7,7 @@ const client = axios.create({
   headers: { 'Authorization': 'Bearer ' + process.env.openai }
 });
 
-
+const url = process.env.nexturl + `/${name}`;
 const app = express();
 const port = 3000;
 app.use(cors());
@@ -17,49 +17,20 @@ app.post('/process', async (req, res) => {
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
   });
-  const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox', "single-process", "--no-zygote"],
-    executablePath:
-    process.env.NODE_ENV === "production"
-    ? process.env.PUPPETEER_EXECUTABLE_PATH
-    :puppeteer.executablePath(),
-  });  const page = await browser.newPage();
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+    });
 
-  // Intercept network requests
-  await page.setRequestInterception(true);
+    const data = await response.json();
 
-  // Listen for requests and log URLs
-  page.on('request', async (request) => {
-    const url = request.url();
-    if (url.endsWith('.json')) {
-      console.log('Request URL:', url);
-  
-      try {
-        const response = await fetch(url, {
-          method: 'GET',
-        });
-  
-        const data = await response.json();
-  
-        // Assuming desc is defined outside this block
-        desc = data.pageProps.rawPodcast.description;
-        console.log(desc);
-  
-      } catch (error) {
-        console.error('Error fetching JSON:', error);
-      }
-    }
-  
-    request.continue();
-  });
+    // Assuming desc is defined outside this block
+    desc = data.pageProps.rawPodcast.description;
+    console.log(desc);
 
-  // Navigate to a website (using a placeholder URL)
-  await page.goto(`https://rephonic.com/podcasts/${name}`);
-
-  // Perform other actions on the page if needed
-
-  // Close the browser
-  await browser.close();
+  } catch (error) {
+    console.error('Error fetching JSON:', error);
+  }
 
 const params = {
   "model": "gpt-3.5-turbo-16k",
