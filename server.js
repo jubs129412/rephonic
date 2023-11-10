@@ -10,7 +10,7 @@ const app = express();
 const port = 3000;
 app.use(cors());
 app.post('/process', async (req, res) => {
-  
+  let desc;
   const { apiKey, audienceInfo, name, list } = req.query;
   const url = process.env.nexturl + `${name}.json`;
   console.log(url)
@@ -25,7 +25,7 @@ app.post('/process', async (req, res) => {
     const data = await response.json();
 
     // Assuming desc is defined outside this block
-    const desc = data.pageProps.rawPodcast.description;
+    desc = data.pageProps.rawPodcast.description;
     console.log(desc);
 
   } catch (error) {
