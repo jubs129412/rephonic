@@ -6,12 +6,6 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     openai=true \
     nexturl='https://rephonic.com/_next/data/7DQgwY0H_1cTIBCef377E/podcasts/'
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm ci
-
 COPY . .
 
 CMD ["node","server.js"]
