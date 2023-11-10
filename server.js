@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require('axios');
+const fs = require('fs');
+const puppeteer = require('puppeteer');
 const cors = require('cors');
 require('dotenv').config();
 const client = axios.create({
@@ -17,6 +19,27 @@ app.post('/process', async (req, res) => {
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
   });
+  async function getJSON() {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+
+      const data = await response.json();
+
+      // Assuming desc is defined outside this block
+      desc = data.pageProps.rawPodcast.description;
+      console.log(desc);
+
+    } catch (error) {
+      console.error('Error fetching JSON:', error);
+      newnext()
+
+    }
+  }
+
+  getJSON()
+
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -30,7 +53,59 @@ app.post('/process', async (req, res) => {
 
   } catch (error) {
     console.error('Error fetching JSON:', error);
+    newnext()
+
   }
+
+  async function newnext() {
+
+    try {
+
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox', "single-process", "--no-zygote"],
+        executablePath:
+        process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        :puppeteer.executablePath(),
+      });
+
+  const page = await browser.newPage();
+
+  // Intercept network requests
+  await page.setRequestInterception(true);
+
+  // Listen for requests and log URLs
+  page.on('request', (request) => {
+    const url = request.url();
+    if (url.endsWith('.json')) {
+
+          desc = data.pageProps.rawPodcast.description
+          console.log(desc);
+          fs.writeFile('url.txt', url, err => {
+            getJSON()
+            if (err) {
+              console.error(err);
+            }
+            // file written successfully
+          });
+          
+    }
+    request.continue();
+  });
+
+  // Navigate to a website (using a placeholder URL)
+  await page.goto(`https://rephonic.com/podcasts/${name}`);
+
+  // Perform other actions on the page if needed
+
+  // Close the browser
+  await browser.close();
+    }
+     catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
 
 const params = {
   "model": "gpt-3.5-turbo-16k",
