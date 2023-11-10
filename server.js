@@ -14,7 +14,8 @@ app.use(cors());
 app.post('/process', async (req, res) => {
   let desc;
   const { apiKey, audienceInfo, name, list } = req.query;
-  const url = process.env.nexturl + `${name}.json`;
+  //const url = process.env.nexturl + `${name}.json`;
+  const url = fs.readFileSync('url.txt', 'utf8');
   console.log(url)
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
