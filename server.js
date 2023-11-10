@@ -12,7 +12,7 @@ app.use(cors());
 app.post('/process', async (req, res) => {
   
   const { apiKey, audienceInfo, name, list } = req.query;
-  const url = process.env.nexturl + `${name}`;
+  const url = process.env.nexturl + `${name}.json`;
   console.log(url)
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
@@ -21,25 +21,15 @@ app.post('/process', async (req, res) => {
     const response = await fetch(url, {
       method: 'GET',
     });
-  
-    const html = await response.text();
-  
-    // Create a DOMParser
-    const parser = new DOMParser();
-  
-    // Parse the HTML string
-    const doc = parser.parseFromString(html, 'text/html');
-  
-    // Use XPath to select the desired content
-    const xpath = '/html/body/div/div/div[1]/div/div/div[1]/div[1]/div/div[2]/div/p'; // Replace with your specific XPath
-    const element = doc.evaluate(xpath, doc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-  
-    // Get the text content from the selected element
-    const desc = element.textContent.trim();
+
+    const data = await response.json();
+
+    // Assuming desc is defined outside this block
+    const desc = data.pageProps.rawPodcast.description;
     console.log(desc);
-  
+
   } catch (error) {
-    console.error('Error fetching HTML:', error);
+    console.error('Error fetching JSON:', error);
   }
 
 const params = {
