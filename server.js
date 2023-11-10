@@ -11,7 +11,7 @@ const client = axios.create({
 const app = express();
 const port = 3000;
 app.use(cors());
-app.get('/process', async (req, res) => {
+app.post('/process', async (req, res) => {
   
   const { apiKey, audienceInfo, name, list } = req.query;
   const client2 = axios.create({
