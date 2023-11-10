@@ -1,4 +1,4 @@
-FROM scratch
+FROM alpine:latest
 
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
