@@ -67,6 +67,8 @@ response = client.post('https://api.openai.com/v1/chat/completions', params)
 }).catch(err => {
   console.log("error:");
 console.log(err);
+c = "no"
+res.send({ c });
 });
 
 
