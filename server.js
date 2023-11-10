@@ -12,7 +12,8 @@ app.use(cors());
 app.post('/process', async (req, res) => {
   
   const { apiKey, audienceInfo, name, list } = req.query;
-  const url = process.env.nexturl + `/${name}`;
+  const url = process.env.nexturl + `${name}`;
+  console.log(url)
   const client2 = axios.create({
     headers: { 'X-Rephonic-Auth': apiKey }
   });
@@ -24,7 +25,7 @@ app.post('/process', async (req, res) => {
     const data = await response.json();
 
     // Assuming desc is defined outside this block
-    desc = data.pageProps.rawPodcast.description;
+    const desc = data.pageProps.rawPodcast.description;
     console.log(desc);
 
   } catch (error) {
