@@ -32,7 +32,7 @@ app.post('/process', async (req, res) => {
       // Assuming desc is defined outside this block
       desc = data.pageProps.rawPodcast.description;
       console.log(desc);
-
+      gpt()
     } catch (error) {
       console.error('Error fetching JSON:', error);
       newnext()
@@ -40,24 +40,7 @@ app.post('/process', async (req, res) => {
     }
   }
 
-  getJSON()
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-    });
-
-    const data = await response.json();
-
-    // Assuming desc is defined outside this block
-    desc = data.pageProps.rawPodcast.description;
-    console.log(desc);
-
-  } catch (error) {
-    console.error('Error fetching JSON:', error);
-    newnext()
-
-  }
+  getJSON();
 
   async function newnext() {
 
@@ -108,7 +91,7 @@ app.post('/process', async (req, res) => {
     }
   }
   
-
+async function gpt(){
 const params = {
   "model": "gpt-3.5-turbo-16k",
   "messages": [
@@ -127,7 +110,7 @@ const params = {
 ]
 }
 
-response = client.post('https://api.openai.com/v1/chat/completions', params)
+response = await client.post('https://api.openai.com/v1/chat/completions', params)
 .then(result => {
   console.log(result.data.choices[0].message.content);
   c = result.data.choices[0].message.content
@@ -147,7 +130,7 @@ console.log(err);
 c = "no"
 res.send({ c });
 });
-
+}
 
 function reph(c){
   const params = {
