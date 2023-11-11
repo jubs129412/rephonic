@@ -61,12 +61,10 @@ app.post('/process', async (req, res) => {
 
   // Listen for requests and log URLs
   page.on('request', (request) => {
-    const url = request.url();
-    if (url.endsWith('.json')) {
-
-          desc = data.pageProps.rawPodcast.description
-          console.log(desc);
-          fs.writeFile('url.txt', url, err => {
+    const urls = request.url();
+    if (urls.endsWith('.json')) {
+          fs.writeFile('url.txt', urls, err => {
+            console.log(urls)
             getJSON()
             if (err) {
               console.error(err);
