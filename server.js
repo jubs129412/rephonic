@@ -20,7 +20,7 @@ app.post('/process', async (req, res) => {
     headers: { 'X-Rephonic-Auth': apiKey }
   });
   async function getJSON() {
-    const url = fs.readFileSync('url.txt', 'utf8');
+    const url = fs.readFileSync('url.txt', 'utf8');  + `${name}.json`;
     console.log(url)
     try {
       const response = await fetch(url, {
