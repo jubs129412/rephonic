@@ -63,9 +63,12 @@ app.post('/process', async (req, res) => {
   page.on('request', (request) => {
     const urls = request.url();
     if (urls.endsWith('.json')) {
-          fs.writeFile('url.txt', urls, err => {
-            console.log(urls)
-            getJSON()
+      var seg = urls.split('/');
+      seg.pop();
+      var modifiedUrl = urlSegments.join('/');
+          fs.writeFile('url.txt', modifiedUrl, err => {
+            console.log(modifiedUrl)
+            getJSON() 
             if (err) {
               console.error(err);
             }
