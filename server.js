@@ -21,7 +21,7 @@ app.post('/process', async (req, res) => {
   });
   async function getJSON() {
     const url = fs.readFileSync('url.txt', 'utf8');  + `${name}.json`;
-    console.log(url)
+    console.log('attempting to read file' + url)
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -66,11 +66,17 @@ app.post('/process', async (req, res) => {
       var seg = urls.split('/');
       seg.pop();
       var modifiedUrl = urlSegments.join('/');
-          fs.writeFile('url.txt', modifiedUrl, err => {
-            console.log(modifiedUrl)
-            getJSON() 
+      console.log('Modified URL' + modifiedUrl)
+
+          fs.writeFileSync('url.txt', modifiedUrl, err => {
+            
+            
             if (err) {
               console.error(err);
+            }
+            else {
+              console.log('success, now running. url is:' + modifiedUrl)
+              getJSON() 
             }
             // file written successfully
           });
