@@ -4,6 +4,10 @@ const fs = require('fs');
 const puppeteer = require('puppeteer');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
+const directoryPath = 'url';
+const filePath = path.join(directoryPath, 'url.txt');
+
 const client = axios.create({
   headers: { 'Authorization': 'Bearer ' + process.env.openai }
 });
@@ -68,18 +72,14 @@ app.post('/process', async (req, res) => {
       var modifiedUrl = seg.join('/');
       console.log('Modified URL' + modifiedUrl)
 
-          fs.writeFileSync('url/url.txt', modifiedUrl, err => {
-            
-            
-            if (err) {
-              console.error(err);
-            }
-            else {
-              console.log('success, now running. url is:' + modifiedUrl)
-              getJSON() 
-            }
-            // file written successfully
-          });
+      fs.writeFileSync(filePath, modifiedUrl, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Success, now running. URL is: ' + modifiedUrl);
+          getJSON();
+        }
+      });
           
     }
     request.continue();
