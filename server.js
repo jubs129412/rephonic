@@ -72,14 +72,11 @@ app.post('/process', async (req, res) => {
       var modifiedUrl = seg.join('/');
       console.log('Modified URL' + modifiedUrl)
 
-      fs.writeFileSync('/var/data/url.txt', modifiedUrl, err => {
+      fs.writeFile('/var/data/url.txt', modifiedUrl, err => {
         getJSON();
         if (err) {
           console.error(err);
-        } else {
-          console.log('Success, now running. URL is: ' + modifiedUrl);
-          getJSON();
-        }
+        } 
       });
           
     }
