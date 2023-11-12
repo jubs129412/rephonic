@@ -65,7 +65,7 @@ app.post('/process', async (req, res) => {
     if (urls.endsWith('.json')) {
       var seg = urls.split('/');
       seg.pop();
-      var modifiedUrl = urlSegments.join('/');
+      var modifiedUrl = seg.join('/');
       console.log('Modified URL' + modifiedUrl)
 
           fs.writeFileSync('url.txt', modifiedUrl, err => {
