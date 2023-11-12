@@ -24,7 +24,7 @@ app.post('/process', async (req, res) => {
     headers: { 'X-Rephonic-Auth': apiKey }
   });
   async function getJSON() {
-    const url = fs.readFileSync('url.txt', 'utf8');  + `${name}.json`;
+    const url = fs.readFileSync('/var/data/url.txt', 'utf8');  + `${name}.json`;
     console.log('attempting to read file' + url)
     try {
       const response = await fetch(url, {
@@ -72,7 +72,7 @@ app.post('/process', async (req, res) => {
       var modifiedUrl = seg.join('/');
       console.log('Modified URL' + modifiedUrl)
 
-      fs.writeFileSync('url.txt', modifiedUrl, err => {
+      fs.writeFileSync('/var/data/url.txt', modifiedUrl, err => {
         if (err) {
           console.error(err);
         } else {
