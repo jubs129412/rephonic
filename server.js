@@ -1,7 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
-const puppeteer = require('puppeteer');
+//const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra') 
 const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
@@ -51,7 +52,8 @@ app.post('/process', async (req, res) => {
   async function newnext() {
 
     try {
-
+      const StealthPlugin = require('puppeteer-extra-plugin-stealth') 
+      puppeteer.use(StealthPlugin()) 
       const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox', "single-process", "--no-zygote"],
         executablePath:
