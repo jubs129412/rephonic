@@ -102,7 +102,7 @@ app.post('/process', async (req, res) => {
   
 async function gpt(){
 const params = {
-  "model": "gpt-3.5-turbo-16k",
+  "model": "gpt-4o-mini",
   "messages": [
     {
         "role": "user",
